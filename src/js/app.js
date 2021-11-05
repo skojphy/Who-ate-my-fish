@@ -325,7 +325,7 @@ socket.on('user update', ([name, url]) => {
   document.querySelector('.info__profile-img').setAttribute('src', url);
 });
 
-socket.on('currentUsers', civiluser => {
+socket.on('current users', civiluser => {
   gameInfo.totalUsers = civiluser;
   gameFunctions.renderUsers();
 });
@@ -375,7 +375,7 @@ socket.on('change gameState', (status, civilUser, mafiaUser) => {
   gameFunctions.renderInfoSection(gameInfo.state);
 });
 
-socket.on('fullRoom', () => {
+socket.on('full room', () => {
   // alert('방이 다 찼습니다.');
   socket.disconnect();
   // socket.emit('force disconnected');

@@ -163,14 +163,13 @@ const gameReset = () => {
  */
 io.on('connection', socket => {
   // if (gameInfo.getCurrentUsers().length >= 5) {
-  //   // 소켓 이벤트 명 프론트랑 상의해서 맞추기 full room 이런식으로
-  //   io.to(socket.id).emit('fullRoom');
+  //   io.to(socket.id).emit('full room');
   // }
   if (gameInfo.getCurrentUsers().length === 5) {
-    io.to(socket.id).emit('fullRoom');
+    io.to(socket.id).emit('full room');
   }
 
-  let catInfo = '';
+  let catInfo = {};
   if (gameInfo.getCurrentUsers().length < 5) {
     // TODO: user 클로저를 없애고 gameInfo에 totalUser로 관리하는게 더 나을듯
     catInfo = gameInfo.add(socket.id);
@@ -181,8 +180,7 @@ io.on('connection', socket => {
 
   const { nickName, catImageUrl, jailCatImageUrl } = catInfo;
 
-  // current users 이름 바꾸기
-  io.emit('currentUsers', gameInfo.getCurrentUsers());
+  io.emit('current users', gameInfo.getCurrentUsers());
 
   // chat message이벤트가 발생한 경우
   socket.on('chat message', msg => {
@@ -195,6 +193,8 @@ io.on('connection', socket => {
     io.emit('change gameState', GAME_STAGE.BEGINNING, gameInfo.getCitizens().length, GAME_STATUS_VALUE.MAFIA_NUM);
 
     setTimeout(() => {
+      // gameInfo.getCurrentUsers().forEach(user => {}); -> 아래 코드 중복 없애고 get secret-code로 통일하기
+
       gameInfo.getCitizens().forEach(civil => {
         io.to(civil.socketId).emit('get secret-code', gameInfo.getSecretCode(), GAME_STATUS_VALUE.CITIZEN);
       });
